@@ -10,56 +10,50 @@
 
 
 
-// console.log(backgroundHeight)
+// t)
 // console.log(screenWidth)
 
 class Player {
-    constructor(){
+    constructor() {
         this.positionX = 100;
         this.positionY = 100;
         this.player = this.createPlayer()
     }
 
-    createPlayer(){
+    createPlayer() {
         const container = document.createElement("div")
         document.body.appendChild(container)
         container.style.height = "40px";
-    container.style.width = "40px";
-    container.style.backgroundColor = "black"
-    container.style.position = "absolute"
-    
-    container.style.left =`${this.positionX}px`
-    container.style.bottom =`${this.positionY}px`
-    
-    return container
+        container.style.width = "40px";
+        container.style.backgroundColor = "black"
+        container.style.position = "absolute"
+        container.style.left = `${this.positionX}px`
+        container.style.bottom = `${this.positionY}px`
+
+        return container
     }
 
-    moveLeft(){
-        this.positionX--
-        console.log(this.positionX)
-        this.player.style.left = this.positionX +"px"
-        // console.log(this.player)
+    moveLeft() {
+        this.positionX -= 3
+
+        this.player.style.left = this.positionX + "px"
     }
 
-    moveRight(){
-        this.positionX++;
-        this.player.style.left = this.positionX +"px"
+    moveRight() {
+        this.positionX += 3
+        this.player.style.left = this.positionX + "px"
 
-        console.log(this.positionX)
-    }
-
-    moveRight(){
-        this.positionX++;
-        console.log(this.positionX)
 
     }
-    moveUp(){
-        this.positionY++;
-        console.log(this.positionY)
+    moveUp() {
+        this.positionY += 3;
+        this.player.style.bottom = this.positionY + "px"
+
     }
-    moveDown(){
-        this.positionY--;
-        console.log(this.positionY)
+    moveDown() {
+        this.positionY -= 3;
+        this.player.style.bottom = this.positionY + "px"
+
     }
 }
 
@@ -71,17 +65,13 @@ const myPlayer = new Player();
 
 document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft") {
-        console.log("going left")
         myPlayer.moveLeft();
     } else if (e.key === "ArrowRight") {
-        console.log("going right")
         myPlayer.moveRight();
     }
     else if (e.key === "ArrowUp") {
-        console.log("going up")
         myPlayer.moveUp();
     } else if (e.key === "ArrowDown") {
-        console.log("going down")
         myPlayer.moveDown();
     }
 
