@@ -31,7 +31,7 @@ class Enemy extends GameItem {
         this.xValue = 0
         this.yValue = 0
         this.rotation = 0
-        this.enemy.style.backgroundImage = "url('./images/tank.png')"
+        this.enemy.style.backgroundImage = "url('tank.png')"
         this.screenHeight = screen.height
         this.screenWidth = screen.width
         
@@ -88,7 +88,7 @@ class Enemy extends GameItem {
             this.xValue *= -1
             this.yValue *= -1
             this.rotation = 90 * this.xValue * -1
-        } else if (this.positionY > this.screenHeight -50 || this.positionY < 50) {
+        } else if (this.positionY > this.screenHeight -40 || this.positionY < 400) {
             this.xValue *= -1
             this.yValue *= -1
             this.rotation = this.yValue == 1 ? 180 : 0
@@ -111,7 +111,6 @@ class Player extends GameItem {
 
 
     moveLeft() {
-        console.log(this.positionX)
         this.positionX -= 19
         this.player.style.left = this.positionX + "px"
         this.rotate = -90
@@ -121,18 +120,22 @@ class Player extends GameItem {
     moveRight() {
         this.positionX += 19
         this.player.style.left = this.positionX + "px"
+        this.rotate = 90
+        this.player.style.rotate = `${this.rotation}deg`
 
     }
     moveUp() {
-        console.log(this.positionY)
-
         this.positionY += 19;
         this.player.style.bottom = this.positionY + "px"
+        this.rotate = 0
+        this.player.style.rotate = `${this.rotation}deg`
 
     }
     moveDown() {
         this.positionY -= 19;
         this.player.style.bottom = this.positionY + "px"
+        this.rotate = 180
+        this.player.style.rotate = `${this.rotation}deg`
     }
 }
 
@@ -140,9 +143,9 @@ class Bullet {
     constructor(player, enemy) {
         this.player = player;
         this.enemy = enemy;
-        
+        this.bullets = []
     }
-
+    
 
 
     speed = 10
@@ -170,8 +173,8 @@ class Bullet {
     createBullet(x, y) {
         const container = document.createElement("div")
         document.body.appendChild(container)
-        this.bulletHeight = container.style.height = "15px";
-        this.bulletWidth = container.style.width = "5px";
+        this.bulletHeight = container.style.height = "10px";
+        this.bulletWidth = container.style.width = "10px";
         container.style.backgroundColor = "red"
         container.style.position = "absolute"
 
@@ -236,17 +239,13 @@ class Game {
     newEnemy = new Enemy()
     bullet = new Bullet(this.myPlayer, this.newEnemy)
 
-
-
-
-    enemies = []
-    bullets = []
+    
 
     start() {
 
         setInterval(() => {
             this.newEnemy.move()
-        }, 100);
+        }, 1000);
     }
     attachEventListeners() {
 
@@ -259,15 +258,29 @@ class Game {
         document.addEventListener("keydown", (e) => {
             if (e.key === "ArrowLeft") {
                 this.myPlayer.moveLeft();
+                console.log(this.myPlayer.rotate)
             } else if (e.key === "ArrowRight") {
                 this.myPlayer.moveRight();
+                console.log(this.myPlayer.rotate)
             }
             else if (e.key === "ArrowUp") {
                 this.myPlayer.moveUp();
+                console.log(this.myPlayer.rotate)
             } else if (e.key === "ArrowDown") {
                 this.myPlayer.moveDown();
+                console.log(this.myPlayer.rotate)
             } else if (e.key === " ") {
-                this.bullet.shoot(100,100, "up");
+                if (this.myPlayer.rotate == 0){
+                    this.bullet.shoot(100,100, "up");
+                } else if (this.myPlayer.rotate == -90){
+                    this.bullet.rotate = "90deg"
+                    this.bullet.shoot(100,100, "left")
+                } else if (this.myPlayer.rotate == 90){
+                    this.bullet.shoot(100,100, "right")
+                }else if (this.myPlayer.rotate == 180){
+                    this.bullet.shoot(100,100, "down")
+                }
+                
             }
 
         })

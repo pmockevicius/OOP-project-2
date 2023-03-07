@@ -1,10 +1,7 @@
-#player { 
-    background-color: black;
-    height: 100px;
-    width: 100px;
-
-}
 
 #stage {
     background-color: rgb(1, 2, 1);
+    /* background-image: url(images/tank.png); */
 }
+
+
