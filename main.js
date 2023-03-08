@@ -1,17 +1,22 @@
 
 class GameItem {
+    constructor(){
+        this.counter = 0
+        const counterHtml = document.createElement("h1")
+        document.body.appendChild(counterHtml)
+        document.querySelector("h1").innerHTML = this.counter +""
+
+    }
 
     createItem(x, y) {
         const container = document.createElement("div")
         document.body.appendChild(container)
-        this.height = container.style.height = "40px";
-        this.width = container.style.width = "40px";
+        this.height = container.style.height = "50px";
+        this.width = container.style.width = "50px";
         container.style.backgroundColor = "black"
         container.style.position = "absolute"
         container.style.left = `${x}px`
         container.style.bottom = `${y}px`
-        // container.style.backgroundColor = "blue"
-        // container.style.backgroundImage = "url('images/tank.png')"
         return container
     }
 
@@ -21,9 +26,9 @@ class Enemy extends GameItem {
 
     constructor() {
         super()
+        this.enemyArr = []
        this.createEnemy()
-       this.enemyArr = []
-       console.log(this.enemyArr)
+       console.log(this.enemy)
     }
 
 
@@ -33,9 +38,7 @@ class Enemy extends GameItem {
         this.positionY = Math.floor(Math.random() * 300);
         this.enemy = this.createItem(this.positionX, this.positionY)
         this.counter = 0
-        this.timeWindow = 0
-        this.changeDirectionAfter = 0
-        this.timesEllapsed = 100
+        this.timesEllapsed = 200
         this.xValue = 1
         this.yValue = 0
         this.rotation = -90
@@ -43,7 +46,8 @@ class Enemy extends GameItem {
         this.enemy.style.backgroundSize = "contain"
         this.screenHeight = screen.height
         this.screenWidth = screen.width 
-        
+        const enemyReference = document.querySelector("div")
+        this.enemyArr.push(this.enemy)
     }
 
 
@@ -96,7 +100,7 @@ class Enemy extends GameItem {
             this.xValue *= -1
             this.yValue *= -1
             this.rotation = 90 * this.xValue * -1
-        } else if (this.positionY > this.screenHeight - 40 || this.positionY < 5) {
+        } else if (this.positionY > this.screenHeight - 200 || this.positionY < 5) {
             this.xValue *= -1
             this.yValue *= -1
             this.rotation = this.yValue == 1 ? 180 : 0
@@ -106,8 +110,9 @@ class Enemy extends GameItem {
 }
 
 class Player extends GameItem {
-    constructor() {
+    constructor(enemy) {
         super()
+        this.enemyTank = enemy
         this.positionX = 280;
         this.positionY = 400;
         this.player = this.createItem(this.positionX, this.positionY)
@@ -115,16 +120,43 @@ class Player extends GameItem {
         this.player.style.backgroundImage = "url('./images/tank.png')"
         this.player.style.backgroundSize = "contain"
         this.rotation = 0
-
+        console.log(this.enemyTank)
+        this.playerEnemyCollision()
+        
 
     }
 
+    playerEnemyCollision(){
+        setInterval(()=>{
+
+            console.log("this.player.style.left", this.player.style.left)
+            if (
+                parseInt(this.player.style.left) < this.enemyTank.positionX + parseInt(this.width) &&
+                parseInt(this.player.style.left) + parseInt(this.width) > this.enemyTank.positionX &&
+                parseInt(this.player.style.bottom) < this.enemyTank.positionY + parseInt(this.height) &&
+                parseInt(this.height) + parseInt(this.player.style.bottom) > this.enemyTank.positionY 
+            ) {
+                console.log("colliding")
+                return true
+            } else 
+            console.log("not colliding")
+            return false
+        
+        
+
+
+        },1000)
+    }
+    
+        
 
     moveLeft() {
+        console.log(this.player)
         this.positionX -= 19
         this.player.style.left = this.positionX + "px"
         this.rotation = -90
         this.player.style.rotate = `${this.rotation}deg`
+        console.log(this.counter)
     }
 
     moveRight() {
@@ -147,17 +179,35 @@ class Player extends GameItem {
         this.rotation = 180
         this.player.style.rotate = `${this.rotation}deg`
     }
+
+runCollisionDetection(){
+    setInterval(()=>{
+        console.log("hello")
+    }, 200)
 }
 
-class Bullet {
+
+}
+
+class Bullet extends GameItem{
     constructor(player, enemy) {
+        super()
         this.player = player;
         this.enemy = enemy;
         this.bulletsArr = []
         this.rotation = 0
+        // console.log(counterHtml)
     }
 
     speed = 50
+
+createCouner(){
+    {
+        const h1 = document.createElement('h1');
+        document.body.appendChild(h1);
+    }
+
+}
 
     move(speed, direction, x) {
         if (direction === "left") {
@@ -195,10 +245,6 @@ class Bullet {
         container.style.backgroundSize = "contain"
         container.style.backgroundColor = "transparent"
         container.style.rotate = this.rotation + "deg"
-        
-    
-        
-
         this.positionX = container.style.left = `${x}px`
         this.positionY = container.style.bottom = `${y}px`
         return container
@@ -241,10 +287,17 @@ class Bullet {
             
         ) {
             this.enemy.removeEnemy()
-            this.enemy.createEnemy()
+    
             bulletHit.play()
+            bullet.remove()
+            this.enemy.createEnemy()
+            this.player.counter++
+            document.querySelector("h1").innerHTML = this.player.counter +""
+
+            
             return true
         } else {
+            
             return false
         }
 
@@ -278,8 +331,9 @@ class Bullet {
 
 class Game {
 
-    myPlayer = new Player();
+    
     newEnemy = new Enemy()
+    myPlayer = new Player(this.newEnemy);
     bullet = new Bullet(this.myPlayer, this.newEnemy)
 
 
@@ -288,7 +342,7 @@ class Game {
 
         setInterval(() => {
             this.newEnemy.move()
-        }, 10);
+        }, 100);
     }
     attachEventListeners() {
 
