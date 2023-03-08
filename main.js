@@ -73,7 +73,6 @@ class Enemy extends GameItem {
     }
 
     move() {
-        // this.detectCollision()
         this.manageCounter()
         this.detectWalls()
         this.positionX -= this.xValue
@@ -202,7 +201,7 @@ class Bullet {
     shoot(posX, posY, direction) {
         console.log(this.rotation)
         audioElement.play();
-        const bullet = this.createBullet(this.player.positionX + 17.5, this.player.positionY + 20)
+        const bullet = this.createBullet(this.player.positionX + 16, this.player.positionY + 16)
         setInterval(() => {
             this.move(this.speed, direction, bullet)
             this.detectCollision(this.enemy)
@@ -225,17 +224,35 @@ class Bullet {
     detectCollision(enemy) {
 
     this.bulletsArr.forEach((bullet)=>{
+
+        console.log(("bullet style.left", bullet.style.left))
+        console.log("enemy.positionX", enemy.positionX )
+        console.log("this.bulletWidth", this.bulletWidth)
+        console.log("enemy width", enemy.width)
+        console.log("bullet.style.bottom", bullet.style.bottom )
+        console.log("bullet.style.left", bullet.style.left )
+        console.log("enemy.positionY", enemy.positionY )
+        console.log("enemy.height", enemy.height )
+        console.log("this.bulletHeight", this.bulletHeight )
+
+        console.log(parseInt(this.bulletHeight) + parseInt(bullet.style.bottom) > enemy.positionY)
+        console.log(parseInt(bullet.style.left) < enemy.positionX + parseInt(enemy.width))
+        console.log(parseInt(bullet.style.left) + parseInt(this.bulletWidth) > enemy.positionX)
+        console.log(parseInt(this.bulletHeight) + parseInt(bullet.style.bottom) > enemy.positionY)
         if (
-            parseInt(bullet.style.left) < enemy.positionX + enemy.width &&
+            parseInt(bullet.style.left) < enemy.positionX + parseInt(enemy.width) &&
             parseInt(bullet.style.left) + parseInt(this.bulletWidth) > enemy.positionX &&
             parseInt(bullet.style.bottom) < enemy.positionY + parseInt(enemy.height) &&
-            parsedIn(this.bulletHeight) + parseInt(bullet.style.bottom) > enemy.positionY
+            parseInt(this.bulletHeight) + parseInt(bullet.style.bottom) > enemy.positionY
+
+            
         ) {
-            console.log(true)
+            console.log("collided", enemy)
+            
 
             return true
         } else {
-            console.log(false)
+            // console.log(false)
             return false
         }
 
@@ -278,7 +295,7 @@ class Game {
     start() {
 
         setInterval(() => {
-            this.newEnemy.move()
+            // this.newEnemy.move()
         }, 10);
     }
     attachEventListeners() {
