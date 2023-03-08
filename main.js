@@ -305,6 +305,16 @@ class Game {
 }
 
 
+const audioElement = document.querySelector("audio");
+
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+const audioContext = new AudioContext();
+
+// pass it into the audio context
+const track = audioContext.createMediaElementSource(audioElement);
+track.connect(audioContext.destination)
+
 const newGame = new Game()
 newGame.attachEventListeners()
 newGame.start()
@@ -315,14 +325,6 @@ newGame.start()
 // const background = document.getElementById("stage")
 // const player = document.getElementById('player')
 
-const audioElement = document.querySelector("audio");
 
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-
-const audioContext = new AudioContext();
-
-// pass it into the audio context
-const track = audioContext.createMediaElementSource(audioElement);
-track.connect(audioContext.destination)
 
 
