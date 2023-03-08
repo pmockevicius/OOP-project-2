@@ -10,8 +10,8 @@ class GameItem {
         container.style.position = "absolute"
         container.style.left = `${x}px`
         container.style.bottom = `${y}px`
-        container.style.backgroundColor = "blue"
-        container.style.backgroundImage = "url('images/tank.png')"
+        // container.style.backgroundColor = "blue"
+        // container.style.backgroundImage = "url('images/tank.png')"
         return container
     }
 
@@ -31,7 +31,8 @@ class Enemy extends GameItem {
         this.xValue = 1
         this.yValue = 0
         this.rotation = 0
-        // this.enemy.style.backgroundImage = "url('tank.png')"
+        this.enemy.style.backgroundImage = "url('./images/enemy.png')"
+        this.enemy.style.backgroundSize = "contain"
         this.screenHeight = screen.height
         this.screenWidth = screen.width
 
@@ -85,11 +86,11 @@ class Enemy extends GameItem {
     }
 
     detectWalls() {
-        if (this.positionX > this.screenWidth - 100 || this.positionX < 100) {
+        if (this.positionX > this.screenWidth - 40 || this.positionX < 5) {
             this.xValue *= -1
             this.yValue *= -1
             this.rotation = 90 * this.xValue * -1
-        } else if (this.positionY > this.screenHeight - 100 || this.positionY < 100) {
+        } else if (this.positionY > this.screenHeight - 40 || this.positionY < 5) {
             this.xValue *= -1
             this.yValue *= -1
             this.rotation = this.yValue == 1 ? 180 : 0
@@ -107,6 +108,7 @@ class Player extends GameItem {
         this.player.style.backgroundColor = "transparent"
         this.player.style.backgroundImage = "url('./images/tank.png')"
         this.player.style.backgroundSize = "contain"
+        this.rotation = 0
 
 
     }
@@ -115,28 +117,28 @@ class Player extends GameItem {
     moveLeft() {
         this.positionX -= 19
         this.player.style.left = this.positionX + "px"
-        this.rotate = -90
+        this.rotation = -90
         this.player.style.rotate = `${this.rotation}deg`
     }
 
     moveRight() {
         this.positionX += 19
         this.player.style.left = this.positionX + "px"
-        this.rotate = 90
+        this.rotation = 90
         this.player.style.rotate = `${this.rotation}deg`
 
     }
     moveUp() {
         this.positionY += 19;
         this.player.style.bottom = this.positionY + "px"
-        this.rotate = 0
+        this.rotation = 0
         this.player.style.rotate = `${this.rotation}deg`
 
     }
     moveDown() {
         this.positionY -= 19;
         this.player.style.bottom = this.positionY + "px"
-        this.rotate = 180
+        this.rotation = 180
         this.player.style.rotate = `${this.rotation}deg`
     }
 }
@@ -146,22 +148,31 @@ class Bullet {
         this.player = player;
         this.enemy = enemy;
         this.bulletsArr = []
+        this.rotation = 0
     }
 
     speed = 10
 
     move(speed, direction, x) {
         if (direction === "left") {
+            this.rotation = -90
+            x.style.rotate = this.rotation + "deg"
             x.style.left = parseInt(x.style.left, 10) - speed + "px"
         } else if (direction === "right") {
+            this.rotation = 90
+            x.style.rotate = this.rotation + "deg"
             x.style.left = parseInt(x.style.left, 10) + speed + "px"
 
         }
         else if (direction === "up") {
+            this.rotation = 0
+            x.style.rotate = this.rotation + "deg"
             x.style.bottom = parseInt(x.style.bottom, 10) + speed + "px"
 
         }
         else if (direction === "down") {
+            this.rotation = 180
+            x.style.rotate = this.rotation + "deg"
             x.style.bottom = parseInt(x.style.bottom, 10) - speed + "px"
 
         }
@@ -172,10 +183,14 @@ class Bullet {
         document.body.appendChild(container)
         this.bulletHeight = container.style.height = "10px";
         this.bulletWidth = container.style.width = "10px";
-        container.style.backgroundColor = "red"
         container.style.position = "absolute"
         this.bulletsArr.push(container)
-   
+        container.style.backgroundImage = "url('./images/bullet_up.png')"
+        container.style.backgroundSize = "contain"
+        container.style.backgroundColor = "transparent"
+        container.style.rotate = this.rotation + "deg"
+        
+    
         
 
         this.positionX = container.style.left = `${x}px`
@@ -185,6 +200,7 @@ class Bullet {
     }
 
     shoot(posX, posY, direction) {
+        console.log(this.rotation)
         audioElement.play();
         const bullet = this.createBullet(this.player.positionX + 17.5, this.player.positionY + 20)
         setInterval(() => {
@@ -207,7 +223,6 @@ class Bullet {
     }
 
     detectCollision(enemy) {
-        console.log(enemy.height)
 
     this.bulletsArr.forEach((bullet)=>{
         if (
@@ -285,14 +300,14 @@ class Game {
             } else if (e.key === "ArrowDown") {
                 this.myPlayer.moveDown();
             } else if (e.key === " ") {
-                if (this.myPlayer.rotate == 0) {
+                if (this.myPlayer.rotation == 0) {
                     this.bullet.shoot(0, 0, "up");
-                } else if (this.myPlayer.rotate == -90) {
-                    this.bullet.rotate = "90deg"
+                } else if (this.myPlayer.rotation == -90) {
+                    this.bullet.rotation = "90deg"
                     this.bullet.shoot(100, 100, "left")
-                } else if (this.myPlayer.rotate == 90) {
+                } else if (this.myPlayer.rotation == 90) {
                     this.bullet.shoot(100, 100, "right")
-                } else if (this.myPlayer.rotate == 180) {
+                } else if (this.myPlayer.rotation == 180) {
                     this.bullet.shoot(100, 100, "down")
                 }
 
