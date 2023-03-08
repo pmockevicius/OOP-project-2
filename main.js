@@ -27,7 +27,7 @@ class Enemy extends GameItem {
         this.counter = 0
         this.timeWindow = 0
         this.changeDirectionAfter = 0
-        this.timesEllapsed = 200
+        this.timesEllapsed = 400
         this.xValue = 1
         this.yValue = 0
         this.rotation = 0
@@ -85,11 +85,11 @@ class Enemy extends GameItem {
     }
 
     detectWalls() {
-        if (this.positionX > this.screenWidth - 50 || this.positionX < 50) {
+        if (this.positionX > this.screenWidth - 100 || this.positionX < 100) {
             this.xValue *= -1
             this.yValue *= -1
             this.rotation = 90 * this.xValue * -1
-        } else if (this.positionY > this.screenHeight - 50 || this.positionY < 50) {
+        } else if (this.positionY > this.screenHeight - 100 || this.positionY < 100) {
             this.xValue *= -1
             this.yValue *= -1
             this.rotation = this.yValue == 1 ? 180 : 0
@@ -104,8 +104,9 @@ class Player extends GameItem {
         this.positionX = 280;
         this.positionY = 400;
         this.player = this.createItem(this.positionX, this.positionY)
-        this.player.style.backgroundColor = "red"
-        this.player.style.backgroundImage = "url('images/tank.png')"
+        this.player.style.backgroundColor = "transparent"
+        this.player.style.backgroundImage = "url('./images/tank.png')"
+        this.player.style.backgroundSize = "contain"
 
 
     }
@@ -263,7 +264,7 @@ class Game {
 
         setInterval(() => {
             this.newEnemy.move()
-        }, 30);
+        }, 10);
     }
     attachEventListeners() {
 
