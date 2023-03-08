@@ -150,7 +150,7 @@ class Bullet {
         this.rotation = 0
     }
 
-    speed = 10
+    speed = 100
 
     move(speed, direction, x) {
         if (direction === "left") {
@@ -222,23 +222,9 @@ class Bullet {
     }
 
     detectCollision(enemy) {
+        this.enemyTank = enemy
 
     this.bulletsArr.forEach((bullet)=>{
-
-        console.log(("bullet style.left", bullet.style.left))
-        console.log("enemy.positionX", enemy.positionX )
-        console.log("this.bulletWidth", this.bulletWidth)
-        console.log("enemy width", enemy.width)
-        console.log("bullet.style.bottom", bullet.style.bottom )
-        console.log("bullet.style.left", bullet.style.left )
-        console.log("enemy.positionY", enemy.positionY )
-        console.log("enemy.height", enemy.height )
-        console.log("this.bulletHeight", this.bulletHeight )
-
-        console.log(parseInt(this.bulletHeight) + parseInt(bullet.style.bottom) > enemy.positionY)
-        console.log(parseInt(bullet.style.left) < enemy.positionX + parseInt(enemy.width))
-        console.log(parseInt(bullet.style.left) + parseInt(this.bulletWidth) > enemy.positionX)
-        console.log(parseInt(this.bulletHeight) + parseInt(bullet.style.bottom) > enemy.positionY)
         if (
             parseInt(bullet.style.left) < enemy.positionX + parseInt(enemy.width) &&
             parseInt(bullet.style.left) + parseInt(this.bulletWidth) > enemy.positionX &&
@@ -247,12 +233,9 @@ class Bullet {
 
             
         ) {
-            console.log("collided", enemy)
-            
-
+            bulletHit.play()
             return true
         } else {
-            // console.log(false)
             return false
         }
 
@@ -295,7 +278,7 @@ class Game {
     start() {
 
         setInterval(() => {
-            // this.newEnemy.move()
+            this.newEnemy.move()
         }, 10);
     }
     attachEventListeners() {
@@ -337,7 +320,8 @@ class Game {
 }
 
 
-const audioElement = document.querySelector("audio");
+const audioElement = document.getElementById("shooting")
+const bulletHit = document.getElementById("hit")
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 
