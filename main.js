@@ -21,22 +21,34 @@ class Enemy extends GameItem {
 
     constructor() {
         super()
+       this.createEnemy()
+       this.enemyArr = []
+       console.log(this.enemyArr)
+    }
+
+
+
+    createEnemy(){
         this.positionX = Math.floor(Math.random() * 500);
-        this.positionY = 200;
+        this.positionY = Math.floor(Math.random() * 300);
         this.enemy = this.createItem(this.positionX, this.positionY)
         this.counter = 0
         this.timeWindow = 0
         this.changeDirectionAfter = 0
-        this.timesEllapsed = 400
+        this.timesEllapsed = 100
         this.xValue = 1
         this.yValue = 0
-        this.rotation = 0
+        this.rotation = -90
         this.enemy.style.backgroundImage = "url('./images/enemy.png')"
         this.enemy.style.backgroundSize = "contain"
         this.screenHeight = screen.height
-        this.screenWidth = screen.width
+        this.screenWidth = screen.width 
+        
+    }
 
 
+    removeEnemy(){
+        this.enemy.remove()
     }
 
     changeDirection() {
@@ -52,11 +64,6 @@ class Enemy extends GameItem {
             this.rotation = (this.yValue + 1) * 90
         }
     }
-
-    // setTimeWindow(time) {
-    //     this.timeWindow = time
-    //     this.timesEllapsed = this.changeDirectionAfter / this.timeWindow
-    // }
 
     manageCounter() {
         if (this.counter < this.timesEllapsed) {
@@ -150,7 +157,7 @@ class Bullet {
         this.rotation = 0
     }
 
-    speed = 100
+    speed = 50
 
     move(speed, direction, x) {
         if (direction === "left") {
@@ -199,7 +206,6 @@ class Bullet {
     }
 
     shoot(posX, posY, direction) {
-        console.log(this.rotation)
         audioElement.play();
         const bullet = this.createBullet(this.player.positionX + 16, this.player.positionY + 16)
         setInterval(() => {
@@ -212,6 +218,7 @@ class Bullet {
                     || parseInt(this.bulletsArr[bulletIndex].style.left) > parseInt(screen.width)) {
                     this.bulletsArr.splice(bulletIndex, 1)
                     bullet.remove()
+                    
 
 
                 }
@@ -233,6 +240,8 @@ class Bullet {
 
             
         ) {
+            this.enemy.removeEnemy()
+            this.enemy.createEnemy()
             bulletHit.play()
             return true
         } else {
