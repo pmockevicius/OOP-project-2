@@ -27,42 +27,43 @@ class Enemy extends GameItem {
         this.counter = 0
         this.timeWindow = 0
         this.changeDirectionAfter = 0
-        this.timesEllapsed = 0
-        this.xValue = 0
+        this.timesEllapsed = 200
+        this.xValue = 1
         this.yValue = 0
         this.rotation = 0
-        this.enemy.style.backgroundImage = "url('tank.png')"
+        // this.enemy.style.backgroundImage = "url('tank.png')"
         this.screenHeight = screen.height
         this.screenWidth = screen.width
-        
+
 
     }
 
     changeDirection() {
-        const randomDirection = [45, -45].sort(() => Math.random() - 0.5)
+        const randomDirection = [1, -1].sort(() => Math.random() - 0.5)
         const randomNumber = Math.random() // 0 - 1
         if (randomNumber <= 0.5) {
             this.xValue = randomDirection[0]
             this.yValue = 0
-            this.rotation = (this.xValue + 2) * 90 
+            this.rotation = (this.xValue + 2) * 90
         } else {
             this.xValue = 0
             this.yValue = randomDirection[0]
-            this.rotation = (this.yValue + 1) * 90 
+            this.rotation = (this.yValue + 1) * 90
         }
     }
 
-    setTimeWindow(time) {
-        this.timeWindow = time
-        this.timesEllapsed = this.changeDirectionAfter / this.timeWindow
-    }
+    // setTimeWindow(time) {
+    //     this.timeWindow = time
+    //     this.timesEllapsed = this.changeDirectionAfter / this.timeWindow
+    // }
 
     manageCounter() {
-        if (this.counter <= this.timesEllapsed) {
+        if (this.counter < this.timesEllapsed) {
             this.counter += 1
         } else {
             this.changeDirection()
             this.resetCounter()
+            
         }
 
     }
@@ -79,7 +80,7 @@ class Enemy extends GameItem {
         this.enemy.style.bottom = `${this.positionY}px`
         this.enemy.style.left = `${this.positionX}px`
         this.enemy.style.rotate = `${this.rotation}deg`
-        // console.log(this.screenHeight)
+       
 
     }
 
@@ -88,7 +89,7 @@ class Enemy extends GameItem {
             this.xValue *= -1
             this.yValue *= -1
             this.rotation = 90 * this.xValue * -1
-        } else if (this.positionY > this.screenHeight -40 || this.positionY < 400) {
+        } else if (this.positionY > this.screenHeight - 50 || this.positionY < 50) {
             this.xValue *= -1
             this.yValue *= -1
             this.rotation = this.yValue == 1 ? 180 : 0
@@ -105,7 +106,7 @@ class Player extends GameItem {
         this.player = this.createItem(this.positionX, this.positionY)
         this.player.style.backgroundColor = "red"
         this.player.style.backgroundImage = "url('images/tank.png')"
-        
+
 
     }
 
@@ -143,30 +144,25 @@ class Bullet {
     constructor(player, enemy) {
         this.player = player;
         this.enemy = enemy;
-        this.bullets = []
+        this.bulletsArr = []
     }
-    
-
 
     speed = 10
 
     move(speed, direction, x) {
         if (direction === "left") {
             x.style.left = parseInt(x.style.left, 10) - speed + "px"
-           
         } else if (direction === "right") {
             x.style.left = parseInt(x.style.left, 10) + speed + "px"
-            
-        }
 
+        }
         else if (direction === "up") {
             x.style.bottom = parseInt(x.style.bottom, 10) + speed + "px"
-            
+
         }
- 
         else if (direction === "down") {
             x.style.bottom = parseInt(x.style.bottom, 10) - speed + "px"
-           
+
         }
     }
 
@@ -177,37 +173,59 @@ class Bullet {
         this.bulletWidth = container.style.width = "10px";
         container.style.backgroundColor = "red"
         container.style.position = "absolute"
+        this.bulletsArr.push(container)
+   
+        
 
         this.positionX = container.style.left = `${x}px`
         this.positionY = container.style.bottom = `${y}px`
-
         return container
 
     }
- 
+
     shoot(posX, posY, direction) {
-        const bullet = this.createBullet(this.player.positionX + 17.5  , this.player.positionY + 20)
+        audioElement.play();
+        const bullet = this.createBullet(this.player.positionX + 17.5, this.player.positionY + 20)
         setInterval(() => {
             this.move(this.speed, direction, bullet)
-            this.positionY= parseInt(this.positionY, 10) + this.speed + "px"
             this.detectCollision(this.enemy)
+            this.bulletsArr.forEach((bullet) => {
+                const bulletIndex = this.bulletsArr.indexOf(bullet)
+                if (parseInt(this.bulletsArr[bulletIndex].style.left) < 0 || parseInt(this.bulletsArr[bulletIndex].style.bottom) < 0
+                    || parseInt(this.bulletsArr[bulletIndex].style.bottom) > parseInt(screen.height) 
+                    || parseInt(this.bulletsArr[bulletIndex].style.left) > parseInt(screen.width)) {
+                    this.bulletsArr.splice(bulletIndex, 1)
+                    bullet.remove()
+
+
+                }
+
+
+            })
         }, 100)
     }
 
     detectCollision(enemy) {
+        console.log(enemy.height)
+
+    this.bulletsArr.forEach((bullet)=>{
         if (
-            this.positionX < enemy.positionX + enemy.width &&
-            this.positionX + this.bulletWidth > enemy.positionX &&
-            this.positionY < enemy.positionY + enemy.height &&
-            this.bulletHeight + this.positionY > enemy.positionY
+            parseInt(bullet.style.left) < enemy.positionX + enemy.width &&
+            parseInt(bullet.style.left) + parseInt(this.bulletWidth) > enemy.positionX &&
+            parseInt(bullet.style.bottom) < enemy.positionY + parseInt(enemy.height) &&
+            parsedIn(this.bulletHeight) + parseInt(bullet.style.bottom) > enemy.positionY
         ) {
             console.log(true)
-            
+
             return true
-        } else { 
+        } else {
             console.log(false)
-            console.log(this.positionX)
-            return false }
+            return false
+        }
+
+
+    })
+        
     }
 
 
@@ -239,13 +257,13 @@ class Game {
     newEnemy = new Enemy()
     bullet = new Bullet(this.myPlayer, this.newEnemy)
 
-    
+
 
     start() {
 
         setInterval(() => {
             this.newEnemy.move()
-        }, 1000);
+        }, 30);
     }
     attachEventListeners() {
 
@@ -258,33 +276,29 @@ class Game {
         document.addEventListener("keydown", (e) => {
             if (e.key === "ArrowLeft") {
                 this.myPlayer.moveLeft();
-                console.log(this.myPlayer.rotate)
             } else if (e.key === "ArrowRight") {
                 this.myPlayer.moveRight();
-                console.log(this.myPlayer.rotate)
             }
             else if (e.key === "ArrowUp") {
                 this.myPlayer.moveUp();
-                console.log(this.myPlayer.rotate)
             } else if (e.key === "ArrowDown") {
                 this.myPlayer.moveDown();
-                console.log(this.myPlayer.rotate)
             } else if (e.key === " ") {
-                if (this.myPlayer.rotate == 0){
-                    this.bullet.shoot(100,100, "up");
-                } else if (this.myPlayer.rotate == -90){
+                if (this.myPlayer.rotate == 0) {
+                    this.bullet.shoot(0, 0, "up");
+                } else if (this.myPlayer.rotate == -90) {
                     this.bullet.rotate = "90deg"
-                    this.bullet.shoot(100,100, "left")
-                } else if (this.myPlayer.rotate == 90){
-                    this.bullet.shoot(100,100, "right")
-                }else if (this.myPlayer.rotate == 180){
-                    this.bullet.shoot(100,100, "down")
+                    this.bullet.shoot(100, 100, "left")
+                } else if (this.myPlayer.rotate == 90) {
+                    this.bullet.shoot(100, 100, "right")
+                } else if (this.myPlayer.rotate == 180) {
+                    this.bullet.shoot(100, 100, "down")
                 }
-                
+
             }
 
         })
-    }
+    }  
 
 
 }
@@ -300,11 +314,14 @@ newGame.start()
 // const background = document.getElementById("stage")
 // const player = document.getElementById('player')
 
+const audioElement = document.querySelector("audio");
+
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+const audioContext = new AudioContext();
+
+// pass it into the audio context
+const track = audioContext.createMediaElementSource(audioElement);
+track.connect(audioContext.destination)
 
 
-
-// t)
-// console.log(screenWidth)
-
-
-//   
