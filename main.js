@@ -249,7 +249,7 @@ class Bullet extends GameItem {
                 ) {
                 
                 
-                    window.location.href = "./game-over.html"
+                    window.location.href = "./explosion.html"
                     over.play() 
                     // window.location.href = "game-over.html";
                     return true
