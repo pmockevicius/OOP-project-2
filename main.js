@@ -1,10 +1,10 @@
 
 class GameItem {
-    constructor(){
+    constructor() {
         this.counter = 0
-        const counterHtml = document.createElement("h1")
+        const counterHtml = document.createElement("h2")
         document.body.appendChild(counterHtml)
-        document.querySelector("h1").innerHTML = this.counter +""
+        document.querySelector("h2").innerHTML = this.counter + ""
 
     }
 
@@ -27,31 +27,37 @@ class Enemy extends GameItem {
     constructor() {
         super()
         this.enemyArr = []
-       this.createEnemy()
-       console.log(this.enemy)
+        this.createEnemy()
+
     }
 
 
 
-    createEnemy(){
-        this.positionX = Math.floor(Math.random() * 500);
-        this.positionY = Math.floor(Math.random() * 300);
-        this.enemy = this.createItem(this.positionX, this.positionY)
-        this.counter = 0
-        this.timesEllapsed = 200
-        this.xValue = 1
-        this.yValue = 0
-        this.rotation = -90
-        this.enemy.style.backgroundImage = "url('./images/enemy.png')"
-        this.enemy.style.backgroundSize = "contain"
-        this.screenHeight = screen.height
-        this.screenWidth = screen.width 
-        const enemyReference = document.querySelector("div")
-        this.enemyArr.push(this.enemy)
+    createEnemy() {
+
+        setTimeout(() => {
+            this.positionX = Math.floor(Math.random() * 800);
+            this.positionY = Math.floor(Math.random() * 800);
+            this.enemy = this.createItem(this.positionX, this.positionY)
+            this.counter = 0
+            this.timesEllapsed = 200
+            this.xValue = 1
+            this.yValue = 0
+            this.rotation = -90
+            this.enemy.style.backgroundImage = "url('./images/enemy.png')"
+            this.enemy.style.backgroundSize = "contain"
+            this.screenHeight = screen.height
+            this.screenWidth = screen.width
+            const enemyReference = document.querySelector("div")
+            this.enemyArr.push(this.enemy)
+
+
+        },)
+
     }
 
 
-    removeEnemy(){
+    removeEnemy() {
         this.enemy.remove()
     }
 
@@ -75,7 +81,7 @@ class Enemy extends GameItem {
         } else {
             this.changeDirection()
             this.resetCounter()
-            
+
         }
 
     }
@@ -91,7 +97,7 @@ class Enemy extends GameItem {
         this.enemy.style.bottom = `${this.positionY}px`
         this.enemy.style.left = `${this.positionX}px`
         this.enemy.style.rotate = `${this.rotation}deg`
-       
+
 
     }
 
@@ -120,43 +126,42 @@ class Player extends GameItem {
         this.player.style.backgroundImage = "url('./images/tank.png')"
         this.player.style.backgroundSize = "contain"
         this.rotation = 0
-        console.log(this.enemyTank)
+        this.leftPos = null
+        this.bottomPos = null
         this.playerEnemyCollision()
-        
+
 
     }
 
-    playerEnemyCollision(){
-        setInterval(()=>{
+    playerEnemyCollision() {
+        setInterval(() => {
 
-            console.log("this.player.style.left", this.player.style.left)
+            this.leftPos = this.player.style.left
+            this.bottomPos = this.player.style.bottom
             if (
                 parseInt(this.player.style.left) < this.enemyTank.positionX + parseInt(this.width) &&
                 parseInt(this.player.style.left) + parseInt(this.width) > this.enemyTank.positionX &&
                 parseInt(this.player.style.bottom) < this.enemyTank.positionY + parseInt(this.height) &&
-                parseInt(this.height) + parseInt(this.player.style.bottom) > this.enemyTank.positionY 
+                parseInt(this.height) + parseInt(this.player.style.bottom) > this.enemyTank.positionY
             ) {
-                console.log("colliding")
+                window.location.href = "game-over.html";
                 return true
-            } else 
-            console.log("not colliding")
+            } else
             return false
-        
-        
 
 
-        },1000)
+
+
+        }, 1)
     }
-    
-        
+
+
 
     moveLeft() {
-        console.log(this.player)
         this.positionX -= 19
         this.player.style.left = this.positionX + "px"
         this.rotation = -90
         this.player.style.rotate = `${this.rotation}deg`
-        console.log(this.counter)
     }
 
     moveRight() {
@@ -180,34 +185,109 @@ class Player extends GameItem {
         this.player.style.rotate = `${this.rotation}deg`
     }
 
-runCollisionDetection(){
-    setInterval(()=>{
-        console.log("hello")
-    }, 200)
-}
+    runCollisionDetection() {
+        setInterval(() => {
+
+        }, 200)
+    }
 
 
 }
 
-class Bullet extends GameItem{
+class Bullet extends GameItem {
     constructor(player, enemy) {
         super()
         this.player = player;
         this.enemy = enemy;
         this.bulletsArr = []
         this.rotation = 0
-        // console.log(counterHtml)
+        this.enemyMinesArr = []
+        // this.shootEnemy()
+        // this.moveEnemyBullets()
+        this.dropMines()
+        // this.detectCollisionMines(this.player)
+        this.playerMineCollision(this.player)
+        console.log(this.player.bottomPos)
+
     }
 
     speed = 50
+    enemyBulletSpeed = 20
 
-createCouner(){
-    {
-        const h1 = document.createElement('h1');
-        document.body.appendChild(h1);
+    createCouner() {
+        {
+            const h1 = document.createElement('h2');
+            document.body.appendChild(h2);
+        }
+
     }
 
-}
+
+    // detectCollisionMines(player){
+    //     setInterval(()=>{
+    //         this.enemyMinesArr.forEach((mine)=>{
+    //             console.log(mine.style.left)
+    //         })
+            
+    //     },1000)
+    // }
+
+
+    playerMineCollision(player) {
+        setInterval(() => {
+            
+            this.enemyMinesArr.forEach((mine)=>{
+
+                console.log((parseInt(player.leftPos) < parseInt(mine.style.left) + 10))
+                if (
+                    parseInt(player.leftPos) < parseInt(mine.style.left) + 10 &&
+                    parseInt(player.leftPos) + 40 > parseInt(mine.style.left) &&
+                    parseInt(player.bottomPos) < parseInt(mine.style.bottom) + 10 &&
+                    40 + parseInt(player.bottomPos) > parseInt(mine.style.bottom)
+                ) {
+                    console.log("colliding")
+                    window.location.href = "explosion.html"
+                    // window.location.href = "game-over.html";
+                    return true
+                } else
+                return false
+
+
+            })
+            
+
+
+
+
+        }, 100)
+    }
+
+
+
+
+
+    dropMines() {
+        setInterval(() => {
+            const enemyBullet = this.createMine(this.enemy.positionX + 16, this.enemy.positionY + 16)          
+        }, 5000)
+    }
+
+
+
+    createMine(enemyPosX, enemyPosY) {
+        const enemyBullet = document.createElement("div")
+        document.body.appendChild(enemyBullet)
+        this.bulletHeight = enemyBullet.style.height = "40px";
+        this.bulletWidth = enemyBullet.style.width = "40px";
+        enemyBullet.style.position = "absolute"
+        enemyBullet.style.backgroundImage = "url('./images/cool-mine.png')"
+        enemyBullet.style.backgroundSize = "contain"
+        enemyBullet.style.backgroundColor = "transparent"
+        this.positionX = enemyBullet.style.left = `${enemyPosX}px`
+        this.positionY = enemyBullet.style.bottom = `${enemyPosY}px`
+        this.enemyMinesArr.push(enemyBullet)
+        // return enemyBullet
+    }
 
     move(speed, direction, x) {
         if (direction === "left") {
@@ -260,11 +340,11 @@ createCouner(){
             this.bulletsArr.forEach((bullet) => {
                 const bulletIndex = this.bulletsArr.indexOf(bullet)
                 if (parseInt(this.bulletsArr[bulletIndex].style.left) < 0 || parseInt(this.bulletsArr[bulletIndex].style.bottom) < 0
-                    || parseInt(this.bulletsArr[bulletIndex].style.bottom) > parseInt(screen.height) 
+                    || parseInt(this.bulletsArr[bulletIndex].style.bottom) > parseInt(screen.height)
                     || parseInt(this.bulletsArr[bulletIndex].style.left) > parseInt(screen.width)) {
                     this.bulletsArr.splice(bulletIndex, 1)
                     bullet.remove()
-                    
+
 
 
                 }
@@ -277,61 +357,42 @@ createCouner(){
     detectCollision(enemy) {
         this.enemyTank = enemy
 
-    this.bulletsArr.forEach((bullet)=>{
-        if (
-            parseInt(bullet.style.left) < enemy.positionX + parseInt(enemy.width) &&
-            parseInt(bullet.style.left) + parseInt(this.bulletWidth) > enemy.positionX &&
-            parseInt(bullet.style.bottom) < enemy.positionY + parseInt(enemy.height) &&
-            parseInt(this.bulletHeight) + parseInt(bullet.style.bottom) > enemy.positionY
+        this.bulletsArr.forEach((bullet) => {
+            if (
+                parseInt(bullet.style.left) < enemy.positionX + parseInt(enemy.width) &&
+                parseInt(bullet.style.left) + parseInt(this.bulletWidth) > enemy.positionX &&
+                parseInt(bullet.style.bottom) < enemy.positionY + parseInt(enemy.height) &&
+                parseInt(this.bulletHeight) + parseInt(bullet.style.bottom) > enemy.positionY
 
-            
-        ) {
-            this.enemy.removeEnemy()
-    
-            bulletHit.play()
-            bullet.remove()
-            this.enemy.createEnemy()
-            this.player.counter++
-            document.querySelector("h1").innerHTML = this.player.counter +""
+            ) {
+                this.enemy.removeEnemy()
 
-            
-            return true
-        } else {
-            
-            return false
-        }
+                bulletHit.play()
+                bullet.remove()
+                this.enemy.createEnemy()
+                this.player.counter++
+                document.querySelector("h2").innerHTML = this.player.counter + ""
 
 
-    })
-        
+                return true
+            } else {
+
+                return false
+            }
+
+
+        })
+
     }
 
 
 }
 
-// class Bullet extends GameItem {
-//     constructor(){
-//         super()
-//         this.positionX = 50
-//         this.positionY = 50
-
-//     }
-
-
-//      createBullet() {
-//         this.createItem(this.positionX, this.positionY)
-// }
-// }
-// myPlayer.createPlayer(400, 100)
-
-
-
-
 
 
 class Game {
 
-    
+
     newEnemy = new Enemy()
     myPlayer = new Player(this.newEnemy);
     bullet = new Bullet(this.myPlayer, this.newEnemy)
@@ -342,7 +403,7 @@ class Game {
 
         setInterval(() => {
             this.newEnemy.move()
-        }, 100);
+        }, 5);
     }
     attachEventListeners() {
 
@@ -377,7 +438,7 @@ class Game {
             }
 
         })
-    }  
+    }
 
 
 }

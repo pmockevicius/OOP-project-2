@@ -5,6 +5,29 @@
 }
 
 
-h1{
+h2{
     color:aqua
+}
+
+h3{
+    color: rgb(29, 65, 52);
+
+    
+}
+#explosion{
+    background-image: url(./images/explosion.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover; 
+    width: 100%;
+    height: 100%;
+
+}
+
+#gameOver{
+    background-image: url(./images/colission.png);
+    background-repeat: no-repeat;
+    background-size: cover; 
+    width: 100%;
+    height: 100%;
+
 }
