@@ -139,8 +139,8 @@ class Player extends GameItem {
     constructor(enemy) {
         super()
         this.enemyTank = enemy
-        this.positionX = 700;
-        this.positionY = 50;
+        this.positionX = 280;
+        this.positionY = 700;
         this.player = this.createItem(this.positionX, this.positionY)
         this.player.style.backgroundColor = "transparent"
         this.player.style.backgroundImage = "url('./images/tank.png')"
@@ -165,9 +165,7 @@ class Player extends GameItem {
                 parseInt(this.height) + parseInt(this.player.style.bottom) > this.enemyTank.positionY
             ) {
                 window.location.href = "./game-over.html";
-                setTimeout(()=>{
-                    over.play()
-                },1000)
+                over.play()
                 return true
             } else
             return false
@@ -240,13 +238,13 @@ class Bullet extends GameItem {
             
             this.enemyMinesArr.forEach((mine)=>{
                 if (
-                    parseInt(player.leftPos) < parseInt(mine.style.left) + 10 &&
-                    parseInt(player.leftPos) + 40 > parseInt(mine.style.left) &&
-                    parseInt(player.bottomPos) < parseInt(mine.style.bottom) + 10 &&
-                    40 + parseInt(player.bottomPos) > parseInt(mine.style.bottom)
+                    parseInt(player.leftPos) < parseInt(mine.style.left) + 40 &&
+                    parseInt(player.leftPos) + 50 > parseInt(mine.style.left) &&
+                    parseInt(player.bottomPos) < parseInt(mine.style.bottom) + 40 &&
+                    50 + parseInt(player.bottomPos) > parseInt(mine.style.bottom)
                 ) {
-                    console.log("colliding")
-                    over.play()
+                
+                
                     window.location.href = "./explosion.html"
                     over.play() 
                     // window.location.href = "game-over.html";
