@@ -30,7 +30,7 @@ h2{
 }
 
 #gameOver{
-    background-image: url(./images/colission.png);
+    background-image: url(./images/explosion.jpeg);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
