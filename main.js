@@ -2,29 +2,29 @@
 
 
 
-class GameItem { 
+class GameItem {
     constructor() {
         this.counter = 0
         this.createCounter()
         start.play()
     }
 
-// Creating counter to count enemies killed
+    // Creating counter to count enemies killed
 
-createCounter(){
-    const counterHtml = document.createElement("h2")
-    document.body.appendChild(counterHtml)
+    createCounter() {
+        const counterHtml = document.createElement("h2")
+        document.body.appendChild(counterHtml)
         document.querySelector("h2").innerHTML = 23 + ""
-this.updateCounter()
+        this.updateCounter()
 
-}
+    }
 
-updateCounter(){
-    document.querySelector("h2").innerHTML = this.counter + ""
-    document.getElementsByClassName("score").innerHTML = "labas"
-}
+    updateCounter() {
+        document.querySelector("h2").innerHTML = this.counter + ""
+        document.getElementsByClassName("score").innerHTML = "labas"
+    }
 
-// Create game item method which will be used for creating enemies, bullets and player
+    // Create game item method which will be used for creating enemies, bullets and player
 
     createItem(x, y) {
         const container = document.createElement("div")
@@ -47,27 +47,27 @@ class Enemy extends GameItem {
     }
 
     createEnemy() {
-            this.positionX = Math.floor(Math.random() * 700);
-            this.positionY = Math.floor(Math.random() * 700);
-            this.enemy = this.createItem(this.positionX, this.positionY)
-            this.counter = 0 
-            this.timesEllapsed = 200
-            this.xValue = 1
-            this.yValue = 0
-            this.rotation = -90
-            this.enemy.style.backgroundImage = "url('./images/enemy.png')"
-            this.enemy.style.backgroundSize = "contain"
-            this.screenHeight = screen.height
-            this.screenWidth = screen.width
-            const enemyReference = document.querySelector("div")
-            this.enemyArr.push(this.enemy)
+        this.positionX = Math.floor(Math.random() * 700);
+        this.positionY = Math.floor(Math.random() * 700);
+        this.enemy = this.createItem(this.positionX, this.positionY)
+        this.counter = 0
+        this.timesEllapsed = 200
+        this.xValue = 1
+        this.yValue = 0
+        this.rotation = -90
+        this.enemy.style.backgroundImage = "url('./images/enemy.png')"
+        this.enemy.style.backgroundSize = "contain"
+        this.screenHeight = screen.height
+        this.screenWidth = screen.width
+        const enemyReference = document.querySelector("div")
+        this.enemyArr.push(this.enemy)
     }
 
     removeEnemy() {
         this.enemy.remove()
     }
 
-// random direction change method for the enemy
+    // random direction change method for the enemy
 
     changeDirection() {
         const randomDirection = [1, -1].sort(() => Math.random() - 0.5)
@@ -151,24 +151,24 @@ class Player extends GameItem {
             ) {
                 window.location.href = "./game-over.html";
                 over.play()
-                
-            } 
+
+            }
         }, 1)
     }
 
     moveLeft() {
-        if(parseInt(this.player.style.left) > 10){
+        if (parseInt(this.player.style.left) > 10) {
             move.play()
-        this.positionX -= 19
-        this.player.style.left = this.positionX + "px"
-        this.rotation = -90
-        this.player.style.rotate = `${this.rotation}deg`
+            this.positionX -= 19
+            this.player.style.left = this.positionX + "px"
+            this.rotation = -90
+            this.player.style.rotate = `${this.rotation}deg`
         }
     }
 
     moveRight() {
         console.log(screen.width)
-        if(parseInt(this.player.style.left) < screen.width -70){
+        if (parseInt(this.player.style.left) < screen.width - 70) {
             move.play()
             this.positionX += 19
             this.player.style.left = this.positionX + "px"
@@ -178,23 +178,23 @@ class Player extends GameItem {
     }
 
     moveUp() {
-        if ((parseInt(this.player.style.bottom) < screen.height -150)){
+        if ((parseInt(this.player.style.bottom) < screen.height - 150)) {
             move.play()
             this.positionY += 19;
             this.player.style.bottom = this.positionY + "px"
             this.rotation = 0
             this.player.style.rotate = `${this.rotation}deg`
         }
-     }
+    }
 
     moveDown() {
-        if ((parseInt(this.player.style.bottom) > 15)){
+        if ((parseInt(this.player.style.bottom) > 15)) {
             move.play()
             this.positionY -= 19;
             this.player.style.bottom = this.positionY + "px"
             this.rotation = 180
             this.player.style.rotate = `${this.rotation}deg`
-        } 
+        }
     }
 }
 
@@ -221,8 +221,8 @@ class Bullet extends GameItem {
     }
 
     playerMineCollision(player) {
-        setInterval(() => {            
-            this.enemyMinesArr.forEach((mine)=>{
+        setInterval(() => {
+            this.enemyMinesArr.forEach((mine) => {
                 if (
                     parseInt(player.leftPos) < parseInt(mine.style.left) + 40 &&
                     parseInt(player.leftPos) + 50 > parseInt(mine.style.left) &&
@@ -230,22 +230,22 @@ class Bullet extends GameItem {
                     50 + parseInt(player.bottomPos) > parseInt(mine.style.bottom)
                 ) {
                     window.location.href = "./explosion.html"
-                    over.play() 
+                    over.play()
                     // window.location.href = "game-over.html";
                     return true
                 } else
-                return false
+                    return false
             })
         }, 50)
-    } 
+    }
 
     dropMines() {
         setInterval(() => {
-            const enemyBullet = this.createMine(this.enemy.positionX + 16, this.enemy.positionY + 16)          
+            const enemyBullet = this.createMine(this.enemy.positionX + 16, this.enemy.positionY + 16)
         }, 10000)
     }
 
-// creting mines and pushing them to enemyMinesArray
+    // creting mines and pushing them to enemyMinesArray
 
     createMine(enemyPosX, enemyPosY) {
         const enemyBullet = document.createElement("div")
@@ -258,7 +258,7 @@ class Bullet extends GameItem {
         enemyBullet.style.backgroundColor = "transparent"
         this.positionX = enemyBullet.style.left = `${enemyPosX}px`
         this.positionY = enemyBullet.style.bottom = `${enemyPosY}px`
-        this.enemyMinesArr.push(enemyBullet)        
+        this.enemyMinesArr.push(enemyBullet)
     }
 
     // bullet move method, based on players position bullet possition changes
@@ -324,7 +324,7 @@ class Bullet extends GameItem {
     detectCollision(enemy) {
         this.enemyTank = enemy
 
-        this.bulletsArr.forEach((bullet,index) => {
+        this.bulletsArr.forEach((bullet, index) => {
             if (
                 parseInt(bullet.style.left) < enemy.positionX + parseInt(enemy.width) &&
                 parseInt(bullet.style.left) + parseInt(this.bulletWidth) > enemy.positionX &&
@@ -338,8 +338,8 @@ class Bullet extends GameItem {
                 bullet.remove()
                 this.enemy.createEnemy()
                 this.player.counter++
-                document.querySelector("h2").innerHTML = "Enemies Killed " + this.player.counter 
-            } 
+                document.querySelector("h2").innerHTML = "Enemies Killed " + this.player.counter
+            }
         })
     }
 }
