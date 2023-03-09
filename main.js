@@ -345,9 +345,6 @@ class Bullet extends GameItem {
                     || parseInt(this.bulletsArr[bulletIndex].style.left) > parseInt(screen.width)) {
                     this.bulletsArr.splice(bulletIndex, 1)
                     bullet.remove()
-
-
-
                 }
 
 
@@ -358,7 +355,7 @@ class Bullet extends GameItem {
     detectCollision(enemy) {
         this.enemyTank = enemy
 
-        this.bulletsArr.forEach((bullet) => {
+        this.bulletsArr.forEach((bullet,index) => {
             if (
                 parseInt(bullet.style.left) < enemy.positionX + parseInt(enemy.width) &&
                 parseInt(bullet.style.left) + parseInt(this.bulletWidth) > enemy.positionX &&
@@ -367,7 +364,7 @@ class Bullet extends GameItem {
 
             ) {
                 this.enemy.removeEnemy()
-
+                this.bulletsArr.splice(index, 1)
                 bulletHit.play()
                 bullet.remove()
                 this.enemy.createEnemy()
