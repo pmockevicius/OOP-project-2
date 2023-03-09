@@ -1,19 +1,37 @@
 
-class GameItem {
+
+
+
+class GameItem { 
     constructor() {
         this.counter = 0
-        const counterHtml = document.createElement("h2")
-        document.body.appendChild(counterHtml)
-        document.querySelector("h2").innerHTML = this.counter + ""
+        this.createCounter()
 
     }
+
+createCounter(){
+    const counterHtml = document.createElement("h2")
+    document.body.appendChild(counterHtml)
+        document.querySelector("h2").innerHTML = this.counter + ""
+// this.updateCounter()
+
+}
+
+updateCounter(){
+    document.querySelector("h2").innerHTML = this.counter + ""
+    document.querySelector("span").innerHTML = "50"
+
+
+}
+
+
 
     createItem(x, y) {
         const container = document.createElement("div")
         document.body.appendChild(container)
         this.height = container.style.height = "50px";
         this.width = container.style.width = "50px";
-        container.style.backgroundColor = "black"
+        container.style.backgroundColor = "transparent"
         container.style.position = "absolute"
         container.style.left = `${x}px`
         container.style.bottom = `${y}px`
@@ -36,8 +54,8 @@ class Enemy extends GameItem {
     createEnemy() {
 
         setTimeout(() => {
-            this.positionX = Math.floor(Math.random() * 800);
-            this.positionY = Math.floor(Math.random() * 800);
+            this.positionX = Math.floor(Math.random() * 700);
+            this.positionY = Math.floor(Math.random() * 700);
             this.enemy = this.createItem(this.positionX, this.positionY)
             this.counter = 0
             this.timesEllapsed = 200
@@ -185,13 +203,6 @@ class Player extends GameItem {
         this.player.style.rotate = `${this.rotation}deg`
     }
 
-    runCollisionDetection() {
-        setInterval(() => {
-
-        }, 200)
-    }
-
-
 }
 
 class Bullet extends GameItem {
@@ -202,43 +213,27 @@ class Bullet extends GameItem {
         this.bulletsArr = []
         this.rotation = 0
         this.enemyMinesArr = []
-        // this.shootEnemy()
-        // this.moveEnemyBullets()
         this.dropMines()
-        // this.detectCollisionMines(this.player)
         this.playerMineCollision(this.player)
         console.log(this.player.bottomPos)
 
     }
 
     speed = 50
-    enemyBulletSpeed = 20
 
     createCouner() {
         {
-            const h1 = document.createElement('h2');
+            const h2 = document.createElement('h2');
             document.body.appendChild(h2);
         }
 
     }
 
 
-    // detectCollisionMines(player){
-    //     setInterval(()=>{
-    //         this.enemyMinesArr.forEach((mine)=>{
-    //             console.log(mine.style.left)
-    //         })
-            
-    //     },1000)
-    // }
-
-
     playerMineCollision(player) {
         setInterval(() => {
             
             this.enemyMinesArr.forEach((mine)=>{
-
-                console.log((parseInt(player.leftPos) < parseInt(mine.style.left) + 10))
                 if (
                     parseInt(player.leftPos) < parseInt(mine.style.left) + 10 &&
                     parseInt(player.leftPos) + 40 > parseInt(mine.style.left) &&
@@ -261,9 +256,6 @@ class Bullet extends GameItem {
 
         }, 100)
     }
-
-
-
 
 
     dropMines() {
@@ -371,7 +363,9 @@ class Bullet extends GameItem {
                 bullet.remove()
                 this.enemy.createEnemy()
                 this.player.counter++
-                document.querySelector("h2").innerHTML = this.player.counter + ""
+                document.querySelector("h2").innerHTML = "Enemies Killed " + this.player.counter 
+                newGame.updateCounter()
+                this.updateCounter()
 
 
                 return true
