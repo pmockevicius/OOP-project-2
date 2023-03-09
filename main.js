@@ -5,7 +5,7 @@
 class GameItem { 
     constructor() {
         this.counter = 0
-        this.createCounter()
+        // this.createCounter()
         start.play()
         
 
@@ -15,7 +15,7 @@ createCounter(){
     const counterHtml = document.createElement("h2")
     document.body.appendChild(counterHtml)
         document.querySelector("h2").innerHTML = this.counter + ""
-// this.updateCounter()
+this.updateCounter()
 
 }
 
@@ -31,8 +31,8 @@ updateCounter(){
     createItem(x, y) {
         const container = document.createElement("div")
         document.body.appendChild(container)
-        this.height = container.style.height = "50px";
-        this.width = container.style.width = "50px";
+        this.height = container.style.height = "70px";
+        this.width = container.style.width = "70px";
         container.style.backgroundColor = "transparent"
         container.style.position = "absolute"
         container.style.left = `${x}px`
@@ -179,6 +179,7 @@ class Player extends GameItem {
 
 
     moveLeft() {
+        move.play()
         this.positionX -= 19
         this.player.style.left = this.positionX + "px"
         this.rotation = -90
@@ -186,6 +187,7 @@ class Player extends GameItem {
     }
 
     moveRight() {
+        move.play()
         this.positionX += 19
         this.player.style.left = this.positionX + "px"
         this.rotation = 90
@@ -193,6 +195,7 @@ class Player extends GameItem {
 
     }
     moveUp() {
+        move.play()
         this.positionY += 19;
         this.player.style.bottom = this.positionY + "px"
         this.rotation = 0
@@ -200,6 +203,7 @@ class Player extends GameItem {
 
     }
     moveDown() {
+        move.play()
         this.positionY -= 19;
         this.player.style.bottom = this.positionY + "px"
         this.rotation = 180
@@ -218,7 +222,7 @@ class Bullet extends GameItem {
         this.enemyMinesArr = []
         this.dropMines()
         this.playerMineCollision(this.player)
-        console.log(this.player.bottomPos)
+        
 
     }
 
@@ -259,14 +263,14 @@ class Bullet extends GameItem {
 
 
 
-        }, 100)
-    }
+        }, 50)
+    } 
 
 
     dropMines() {
         setInterval(() => {
             const enemyBullet = this.createMine(this.enemy.positionX + 16, this.enemy.positionY + 16)          
-        }, 5000)
+        }, 10000)
     }
 
 
@@ -314,8 +318,8 @@ class Bullet extends GameItem {
     createBullet(x, y) {
         const container = document.createElement("div")
         document.body.appendChild(container)
-        this.bulletHeight = container.style.height = "10px";
-        this.bulletWidth = container.style.width = "10px";
+        this.bulletHeight = container.style.height = "20px";
+        this.bulletWidth = container.style.width = "20px";
         container.style.position = "absolute"
         this.bulletsArr.push(container)
         container.style.backgroundImage = "url('./images/bullet_up.png')"
@@ -330,7 +334,7 @@ class Bullet extends GameItem {
 
     shoot(posX, posY, direction) {
         audioElement.play();
-        const bullet = this.createBullet(this.player.positionX + 16, this.player.positionY + 16)
+        const bullet = this.createBullet(this.player.positionX + 26, this.player.positionY + 26)
         setInterval(() => {
             this.move(this.speed, direction, bullet)
             this.detectCollision(this.enemy)
@@ -369,10 +373,7 @@ class Bullet extends GameItem {
                 this.enemy.createEnemy()
                 this.player.counter++
                 document.querySelector("h2").innerHTML = "Enemies Killed " + this.player.counter 
-                newGame.updateCounter()
-                this.updateCounter()
-
-
+               
                 return true
             } else {
 
@@ -447,6 +448,7 @@ const audioElement = document.getElementById("shooting")
 const bulletHit = document.getElementById("hit")
 const start = document.getElementById("start")
 const over = document.getElementById("over")
+const move = document.getElementById("move")
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 
