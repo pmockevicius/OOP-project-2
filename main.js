@@ -6,6 +6,8 @@ class GameItem {
     constructor() {
         this.counter = 0
         this.createCounter()
+        start.play()
+        
 
     }
 
@@ -163,6 +165,7 @@ class Player extends GameItem {
                 parseInt(this.height) + parseInt(this.player.style.bottom) > this.enemyTank.positionY
             ) {
                 window.location.href = "game-over.html";
+                over.play()
                 return true
             } else
             return false
@@ -241,7 +244,9 @@ class Bullet extends GameItem {
                     40 + parseInt(player.bottomPos) > parseInt(mine.style.bottom)
                 ) {
                     console.log("colliding")
+                    over.play()
                     window.location.href = "explosion.html"
+                    over.play()
                     // window.location.href = "game-over.html";
                     return true
                 } else
@@ -440,6 +445,8 @@ class Game {
 
 const audioElement = document.getElementById("shooting")
 const bulletHit = document.getElementById("hit")
+const start = document.getElementById("start")
+const over = document.getElementById("over")
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 
