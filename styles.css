@@ -1,4 +1,9 @@
 
+#startPage{
+    margin-bottom: 250px;
+}
+
+
 #stage {
     background-color: rgb(145, 203, 145);
     background-image: url(images/mars.jpeg);
@@ -10,14 +15,24 @@
 
 h2{
     color:aqua;
-    align-self: flex-start;
-   
-    
+    align-self: flex-start; 
 }
 
-.sroce{
+#start{
+    background-image: url(./images/battle_city.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#score{
     align-self: baseline;
-    font-weight: 900;
+    position: absolute;
+    align-self: flex-start;
+    margin-top: 100px;
+    color: #c21111;
+    font-size: 100px;
+
     
 }
 
