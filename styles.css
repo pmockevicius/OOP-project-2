@@ -1,21 +1,28 @@
 
 #startPage{
-    margin-bottom: 250px;
+    margin-bottom: 220px;
 }
 
 
 #stage {
     background-color: rgb(145, 203, 145);
-    background-image: url(images/mars.jpeg);
+    background-image: url(images/magma3.jpeg);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 
 
 h2{
     color:aqua;
     align-self: flex-start; 
+    font-family: “Open Sans”, sans-serif;
+    color: #e4dada;
+    text-shadow: 0px -2px 4px #d79a9a, 0px -2px 10px #FF3, 0px -10px 20px         #F90, 0px -20px 40px #C33;
+    font-size: 30px;
+    margin-left: 20px;
 }
 
 #start{

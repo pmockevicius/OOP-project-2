@@ -250,8 +250,8 @@ class Bullet extends GameItem {
     createMine(enemyPosX, enemyPosY) {
         const enemyBullet = document.createElement("div")
         document.body.appendChild(enemyBullet)
-        this.bulletHeight = enemyBullet.style.height = "40px";
-        this.bulletWidth = enemyBullet.style.width = "40px";
+        this.bulletHeight = enemyBullet.style.height = "50px";
+        this.bulletWidth = enemyBullet.style.width = "50px";
         enemyBullet.style.position = "absolute"
         enemyBullet.style.backgroundImage = "url('./images/cool-mine.png')"
         enemyBullet.style.backgroundSize = "contain"
@@ -338,7 +338,7 @@ class Bullet extends GameItem {
                 bullet.remove()
                 this.enemy.createEnemy()
                 this.player.counter++
-                document.querySelector("h2").innerHTML = "Enemies Killed " + this.player.counter
+                document.querySelector("h2").innerHTML = "SCORE " + this.player.counter
             }
         })
     }
