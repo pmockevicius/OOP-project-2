@@ -47,7 +47,7 @@ class Enemy extends GameItem {
     }
 
     createEnemy() {
-        this.positionX = Math.floor(Math.random() * 700);
+        this.positionX = Math.floor(Math.random() * 1500);
         this.positionY = Math.floor(Math.random() * 700);
         this.enemy = this.createItem(this.positionX, this.positionY)
         this.counter = 0
